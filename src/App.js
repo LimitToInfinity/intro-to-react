@@ -1,26 +1,30 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import NavBar from "./components/NavBar.js"
+import CardsContainer from "./components/CardsContainer.js"
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  constructor() { 
+    super();
+      this.state = {
+        triviaQuestions: []
+      }
+  }
+
+  componentDidMount() {
+    fetch('http://jservice.io/api/clues')
+      .then(response => response.json())
+      .then(triviaQuestions => this.setState({ triviaQuestions }));
+  }
+    
+  render() {
+    return(
+      <div className="App">
+        <NavBar />
+        <CardsContainer trivias={this.state.triviaQuestions}/>
+      </div>
+    );
+  }
 }
 
 export default App;
